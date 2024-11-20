@@ -29,10 +29,12 @@ pipenv run duckdb -c "COPY (SELECT * FROM 'mbta-example/gtfs_realtime_data.parqu
 Comparing size on disk:
 
 ```sh
-➜  ls -alh --sort=extension mbta-example
-Permissions Size User Date Modified Name
-.rw-r--r--  320k drew 20 Nov 10:42  gtfs_realtime_data.parquet
-.rw-r--r--  117k drew 20 Nov 10:51  Alerts.pb
-.rw-r--r--  842k drew 20 Nov 10:52  TripUpdates.pb
-.rw-r--r--   72k drew 20 Nov 10:52  VehiclePositions.pb
+➜  du -ch mbta-example/*.pb
+116K    mbta-example/Alerts.pb
+824K    mbta-example/TripUpdates.pb
+ 72K    mbta-example/VehiclePositions.pb
+1.0M    total
+
+➜  du -h mbta-example/*.parquet 
+316K    mbta-example/gtfs_realtime_data.parquet
 ```
