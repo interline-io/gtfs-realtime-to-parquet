@@ -19,3 +19,14 @@ To view output:
 ```sh
 pipenv run parquet-tools show gtfs_realtime_data.parquet | code -
 ```
+
+Comparing size on disk:
+
+```sh
+➜  ls -alh --sort=extension mbta-example
+Permissions Size User Date Modified Name
+.rw-r--r--  320k drew 20 Nov 10:42  gtfs_realtime_data.parquet
+.rw-r--r--  117k drew 20 Nov 10:51  Alerts.pb
+.rw-r--r--  842k drew 20 Nov 10:52  TripUpdates.pb
+.rw-r--r--   72k drew 20 Nov 10:52  VehiclePositions.pb
+```
