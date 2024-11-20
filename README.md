@@ -35,6 +35,6 @@ Comparing size on disk:
  72K    mbta-example/VehiclePositions.pb
 1.0M    total
 
-➜  du -h mbta-example/*.parquet 
-316K    mbta-example/gtfs_realtime_data.parquet
+➜  du -h mbta-example/*.geoparquet 
+ 36K    mbta-example/gtfs_realtime_data.geoparquet
 ```

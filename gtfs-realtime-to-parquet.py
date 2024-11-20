@@ -1,5 +1,6 @@
 import pyarrow as pa
 import pyarrow.parquet as pq
+import pyarrow.compute as pc
 import requests
 import sys
 import os
@@ -105,6 +106,9 @@ def download_and_convert_pb_to_parquet(url, existing_parquet_path=None):
 
     # Define PyArrow schema
     schema = pa.schema([
+        ('position_latitude', pa.float64()),
+        ('position_longitude', pa.float64()),
+        ('geometry', pa.string()),
         ('id', pa.string()),
         ('is_deleted', pa.bool_()),
         ('trip_id', pa.string()),
@@ -124,8 +128,6 @@ def download_and_convert_pb_to_parquet(url, existing_parquet_path=None):
         ('vehicle_id', pa.string()),
         ('vehicle_label', pa.string()),
         ('license_plate', pa.string()),
-        ('position_latitude', pa.float64()),
-        ('position_longitude', pa.float64()),
         ('bearing', pa.float64()),
         ('odometer', pa.float64()),
         ('speed', pa.float64()),
@@ -167,6 +169,7 @@ def download_and_convert_pb_to_parquet(url, existing_parquet_path=None):
         'license_plate': [record.get('license_plate') for record in records],
         'position_latitude': [record.get('position_latitude') for record in records],
         'position_longitude': [record.get('position_longitude') for record in records],
+        'geometry': [f"POINT ({record.get('position_longitude')} {record.get('position_latitude')})" if record.get('position_latitude') is not None and record.get('position_longitude') is not None else None for record in records],
         'bearing': [record.get('bearing') for record in records],
         'odometer': [record.get('odometer') for record in records],
         'speed': [record.get('speed') for record in records],
@@ -191,10 +194,10 @@ def download_and_convert_pb_to_parquet(url, existing_parquet_path=None):
         # Concatenate the new table with the existing one
         combined_table = pa.concat_tables([existing_table, table])
         # Write back to the Parquet file
-        pq.write_table(combined_table, existing_parquet_path)
+        pq.write_table(combined_table, existing_parquet_path, compression='GZIP')
     else:
         # Write to a new Parquet file
-        pq.write_table(table, 'gtfs_realtime_data.parquet')
+        pq.write_table(table, 'gtfs_realtime_data.geoparquet', compression='GZIP')
 
 # Example usage
 if __name__ == "__main__":
