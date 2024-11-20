@@ -35,6 +35,10 @@ Comparing size on disk:
  72K    mbta-example/VehiclePositions.pb
 1.0M    total
 
+tar -czvf mbta-example-pbs.tar.gz *.pb
+du -h mbta-example/*.gz
+356K	mbta-example/mbta-example-pbs.tar.gz
+
 ➜  du -h mbta-example/*.geoparquet 
  36K    mbta-example/gtfs_realtime_data.geoparquet
 ```
