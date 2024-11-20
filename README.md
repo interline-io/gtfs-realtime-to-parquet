@@ -17,7 +17,13 @@ pipenv run python gtfs-realtime-to-parquet.py https://cdn.mbta.com/realtime/Aler
 To view output:
 
 ```sh
-pipenv run parquet-tools show gtfs_realtime_data.parquet | code -
+pipenv run parquet-tools show mbta-example/gtfs_realtime_data.parquet | code -
+```
+
+or using DuckDB:
+
+```sh
+pipenv run duckdb -c "COPY (SELECT * FROM 'mbta-example/gtfs_realtime_data.parquet') TO stdout (FORMAT 'csv', HEADER TRUE);" | code -
 ```
 
 Comparing size on disk:
